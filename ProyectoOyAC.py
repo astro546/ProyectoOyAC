@@ -69,6 +69,12 @@ distance_detect = 8
 #Variable que gestiona el modo de acceso (0.- Entrada, 1.- Salida)
 access_mode = 0
 
+#Valor de los leds
+#Led verde = led_value
+#Led rojo = not led_value
+led_value = 1
+
+
 # Esta funcion setea el angulo del servomotor
 def set_servo_angle(position, servoPin):
     min_duty = 1000  # Ciclo de trabajo mínimo (correspondiente a 0 grados)
@@ -240,4 +246,7 @@ display_nums = {
 while True:
     current_state = states_funcs[current_state]()
     display_nums[num_cars]()
+    led_value = 1 if num_cars < max_limit else 0
+    green_led.value(led_value)
+    red_led.value(not led_value)
     print(current_state)
