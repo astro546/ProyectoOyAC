@@ -16,12 +16,30 @@ class State:
     WAIT_EXIT = 4
     CAR_EXIT = 5
 
-# Configuración de los pines
+# Configuración de los pines ----------------
+#Boton
 button1 = Pin(18, Pin.IN)
+
+#Pines del sensor ultrasonico
 trig = Pin(1, Pin.OUT)
 echo = Pin(2, Pin.IN, Pin.PULL_DOWN)
+
+#Pines de los servomotores
 servo_pin = PWM(Pin(3))
 servo2_pin = PWM(Pin(4))
+
+#Pines de los leds
+red_led = Pin(16, Pin.OUT)
+green_led = Pin(15, Pin.OUT)
+
+#Pines del display 7 segmentos
+e_disp = Pin(11, Pin.OUT)
+d_disp = Pin(12, Pin.OUT)
+c_disp = Pin(13, Pin.OUT)
+g_disp = Pin(22, Pin.OUT)
+f_disp = Pin(21, Pin.OUT)
+a_disp = Pin(20, Pin.OUT)
+b_disp = Pin(19, Pin.OUT)
 
 # Configuración del PWM para el servo
 servo_pin.freq(50)
@@ -143,6 +161,63 @@ def car_exit_func() -> State:
     
 #-----------------------------------------------------------------
 
+#--- Funciones para mostrar numeros en el display ----------------
+def display_0():
+    a_disp.value(1)
+    b_disp.value(1)
+    c_disp.value(1)
+    d_disp.value(1)
+    e_disp.value(1)
+    f_disp.value(1)
+    g_disp.value(0)
+
+def display_1():
+    b_disp.value(1)
+    c_disp.value(1)
+    a_disp.value(0)
+    f_disp.value(0)
+    g_disp.value(0)
+    e_disp.value(0)
+    d_disp.value(0)
+    
+def display_2():
+    a_disp.value(1)
+    b_disp.value(1)
+    g_disp.value(1)
+    e_disp.value(1)
+    d_disp.value(1)
+    f_disp.value(0)
+    c_disp.value(0)
+    
+def display_3():
+    a_disp.value(1)
+    b_disp.value(1)
+    g_disp.value(1)
+    c_disp.value(1)
+    d_disp.value(1)
+    f_disp.value(0)
+    e_disp.value(0)
+    
+def display_4():
+    f_disp.value(1)
+    b_disp.value(1)
+    g_disp.value(1)
+    c_disp.value(1)
+    a_disp.value(0)
+    e_disp.value(0)
+    d_disp.value(0)
+    
+def display_5():
+    a_disp.value(1)
+    f_disp.value(1)
+    g_disp.value(1)
+    c_disp.value(1)
+    d_disp.value(1)
+    b_disp.value(0)
+    e_disp.value(0)
+#-----------------------------------------------------------
+
+#--- Diccionarios de funciones -----------------------------
 states_funcs = {
     State.WAIT_ACCESS: wait_access_func,
     State.CAR_ARRIVAL: car_arrival_func,
@@ -152,6 +227,17 @@ states_funcs = {
     State.CAR_EXIT: car_exit_func,
 }
 
+display_nums = {
+    0: display_0,
+    1: display_1,
+    2: display_2,
+    3: display_3,
+    4: display_4,
+    5: display_5
+}
+#------------------------------------------------------------
+
 while True:
     current_state = states_funcs[current_state]()
+    display_nums[num_cars]()
     print(current_state)
